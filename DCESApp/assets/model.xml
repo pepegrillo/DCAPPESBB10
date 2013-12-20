@@ -1,0 +1,8 @@
+<root>
+	<item text="Huevos y Carnes" image="imgRed.png"/>
+	<item text="Frutas"         image="imgBlue.png"/>
+	<item text="Pastas"         image="imgYellow.png"/>
+	<item text="Verduras" 		image="imgGreen.png"/>
+	<item text="Atún" 			image="imgOrange.png"/>
+	<item text="Pan" 			image="imgBrown.png"/>
+</root>
