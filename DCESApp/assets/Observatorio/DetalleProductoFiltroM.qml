@@ -1,15 +1,15 @@
 import bb.cascades 1.0
+import bb.data 1.0
+import bb.system 1.0
 
 Page {
     property variant idCategoriaNM
     property variant categoriaNM
     property variant idProductoN
+    property  variant vuser
+    property variant hashkey
     
-    onCreationCompleted: {
-        //_timeline.requestProducto(idCategoriaN);
-        _timeline.modelMunicipio.clear();
-    }
-    
+        
     Container {
         //Todo: fill me with QML
         id: containerBg
@@ -17,7 +17,13 @@ Page {
         
         }
         background: Color.White
-        
+        ActivityIndicator {
+            id: dataLoadIndicator
+            preferredWidth: 400
+            preferredHeight: 400
+            horizontalAlignment: HorizontalAlignment.Center
+            verticalAlignment: VerticalAlignment.Center
+        }
         Container {
             layout: StackLayout {
             
@@ -41,7 +47,7 @@ Page {
                     verticalAlignment: VerticalAlignment.Center
                     Label {
                         // Localized text with the dynamic translation and locale updates support
-                        text: qsTr(categoriaN) + Retranslate.onLocaleOrLanguageChanged
+                        text: qsTr("Filtro Municipio") + Retranslate.onLocaleOrLanguageChanged
                         textStyle.base: SystemDefaults.TextStyles.BigText
                         horizontalAlignment: HorizontalAlignment.Center
                         textStyle.color: Color.create("#ffffff")
@@ -69,8 +75,9 @@ Page {
                 
                 }
                 Label {
+                    id: lblerror
                     // Localized text with the dynamic translation and locale updates support
-                    text: qsTr(MensajeInfo.mensaje) + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr() + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.BigText
                     horizontalAlignment: HorizontalAlignment.Center
                     textStyle.color: Color.create("#000000")
@@ -80,7 +87,7 @@ Page {
                 ListView {
                     topPadding: 10
                     bottomPadding: 20
-	                dataModel: _timeline.modelMunicipio
+                    dataModel: dataModel
 	                listItemComponents: [
 	                    ListItemComponent {
 	                        type: "item"
@@ -104,6 +111,8 @@ Page {
                         detalle.idCategoriaNMFS = idCategoriaNM;
                         detalle.idMunicipioN    = chosenItem.idMunicipio
                         detalle.idProductoNM    = idProductoN;
+                        detalle.validaruser		= vuser;
+                        detalle.hashkeyN		= hashkey;
                         detalle.getDataEstablecimiento(idCategoriaNM)
                         detalle.getDataPresentacion(idCategoriaNM)
 	                    // Push the new Page.
@@ -115,19 +124,6 @@ Page {
         }
     
     }
-    paneProperties: NavigationPaneProperties {
-        backButton: ActionItem {
-            title: "Atrás"
-            //imageSource: "asset:///images/customBackButtonImage.png"
-            
-            onTriggered: {
-                _timeline.modelProducto.clear();
-                //_timeline.model.clear();
-                _timeline.requestProducto(idCategoriaNM);
-                nPMenuDC.pop();
-            }
-        }
-    }
     
     attachedObjects: [
         // Create the ComponentDefinition that represents the custom
@@ -136,10 +132,49 @@ Page {
             id: detalle_page
             source: "FiltroDetalle.qml"
         },
-        ComponentDefinition {
-            id: dropdown_page
-            source: "DropDown.qml"
+        GroupDataModel {
+            id: dataModel
+            grouping: ItemGrouping.None
+            sortedAscending: true
+            sortingKeys: [ "municipio" ]
+        },
+        DataSource {
+            id: dataSource
+            remote: true
+            source: "http://observatoriodeprecios.defensoria.gob.sv/v1/getFiltroMunicipios/"+idCategoriaNM;
+            type: DataSourceType.Json
+            onDataLoaded: {
+                dataModel.clear();
+                dataModel.insertList(data.response.msg);
+                dataLoadIndicator.stop();
+                console.log("Dirección URL "+dataSource.source);
+                var errorCode = String(data.response.errorCode);
+                console.log("Dirección DATA "+errorCode);
+                if (errorCode == "1"){
+                    lblerror.text = "No se encuentran datos disponibles."
+                } else {
+                    lblerror.text = ""
+                }
+            }
+            onError: {
+                dataLoadIndicator.stop();
+                myQmlDialog.show();
+            }
+        },
+        // System dialog displayed when the feed can not be shown.
+        SystemDialog {
+            id: myQmlDialog
+            title: "¡Algo malo ha pasado!"
+            body: "Se ha producido un error desafortunado con la descarga de los datos, es probable que no posea conexión a Internet."
         }
     ]
+    
+    function nextParameter(){
+        onCreationCompleted: {
+            dataLoadIndicator.start();
+            dataSource.load();
+        
+        }
+    }
 
 }

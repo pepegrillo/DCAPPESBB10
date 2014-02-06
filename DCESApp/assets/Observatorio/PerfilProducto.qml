@@ -1,7 +1,10 @@
 import bb.cascades 1.0
+import bb.system 1.0
+import "../data.js" as Data
 
 Page {
-    
+    property variant idproductoN
+    property variant idestablecimiento
     property variant productoN
     property variant presentacionN
     property variant marcaN
@@ -11,6 +14,8 @@ Page {
     property variant precioPromN
     property variant latitudN
     property variant longitudN
+    property variant validaruser
+    property variant hashkeyN
     
     
     Container {
@@ -36,7 +41,7 @@ Page {
                     verticalAlignment: VerticalAlignment.Center
                     Label {
                         // Localized text with the dynamic translation and locale updates support
-                        text: qsTr("Peril de producto") + Retranslate.onLocaleOrLanguageChanged
+                        text: qsTr("Perfil de producto") + Retranslate.onLocaleOrLanguageChanged
                         textStyle.base: SystemDefaults.TextStyles.BigText
                         horizontalAlignment: HorizontalAlignment.Center
                         textStyle.color: Color.create("#ffffff")
@@ -200,13 +205,48 @@ Page {
         }
 
     }
+    actions: [
+        ActionItem {
+            id: aiFavorito
+            title: "Guardar en favoritos"
+            ActionBar.placement: ActionBarPlacement.OnBar
+            
+            onTriggered: {
+                if (validaruser == "1") {
+                    myQmlDialog.show();
+                } else if (validaruser == "0") {
+                    var JSONString = '{"hashKey":"'+hashkeyN+'","idArticulo":"'+idproductoN+'","idEstablecimiento":"'+idestablecimiento+'"}';
+                    console.log(JSONString);
+                    Data.submitPostFavoritos(JSONString);
+                    
+                }
+                
+            }
+            imageSource: "asset:///images/btnFav.png"
+        }
+    ]
     attachedObjects: [
         // Create the ComponentDefinition that represents the custom
         // component my pages *.qml
-        ComponentDefinition {
-            id: menuPrincipal_page
-            source: "../MenuPrincipal.qml"
-
+        
+        // System dialog displayed when the feed can not be shown.
+        SystemDialog {
+            id: myQmlDialog
+            title: "Guardar en favoritos"
+            body: "Para guardar productos en favoritos debes iniciar sesión o registrarte."
+            cancelButton.label:  undefined
+        },
+        SystemToast {
+            id: waitFavoritos
+            body: "Guardando en favoritos..."
+        },
+        SystemToast {
+            id: saveFavoritos
+            body: "Producto guardado en favoritos exitosamente."
+        },
+        SystemToast {
+            id: errorFavoritos
+            body: "Este producto ya ha sido guardado."
         }
 
     ]

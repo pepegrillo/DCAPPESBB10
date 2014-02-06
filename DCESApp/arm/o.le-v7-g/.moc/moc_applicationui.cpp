@@ -22,8 +22,8 @@ static const uint qt_meta_data_ApplicationUI[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      10,   14, // methods
-       7,   64, // properties
+      14,   14, // methods
+       9,   84, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
@@ -40,24 +40,32 @@ static const uint qt_meta_data_ApplicationUI[] = {
      120,   83,   14,   14, 0x0a,
      202,  146,   14,   14, 0x0a,
      257,   14,   14,   14, 0x0a,
-     283,  265,   14,   14, 0x08,
+     304,  282,   14,   14, 0x0a,
+     351,  343,   14,   14, 0x0a,
+     418,  385,   14,   14, 0x0a,
+     472,   14,   14,   14, 0x0a,
+     498,  480,   14,   14, 0x08,
 
  // methods: signature, parameters, type, tag, flags
-     343,  334,  323,   14, 0x02,
+     558,  549,  538,   14, 0x02,
 
  // properties: name, type, flags
-     371,  366, 0x01495001,
-     378,  366, 0x01495001,
-     392,  384, 0x0a495001,
-     430,  405, 0x00095409,
-     436,  405, 0x00095409,
-     450,  405, 0x00095409,
-     465,  405, 0x00095409,
+     586,  581, 0x01495001,
+     593,  581, 0x01495001,
+     607,  599, 0x0a495001,
+     645,  620, 0x00095409,
+     651,  620, 0x00095409,
+     665,  620, 0x00095409,
+     680,  620, 0x00095409,
+     700,  620, 0x00095409,
+     715,  620, 0x00095409,
 
  // properties: notify_signal_id
        1,
        2,
        2,
+       0,
+       0,
        0,
        0,
        0,
@@ -74,13 +82,19 @@ static const char qt_meta_stringdata_ApplicationUI[] = {
     "requestMunicipio(QString)\0"
     "idMunicipio,idProducto,idEstablecimiento,idPresentacion\0"
     "requestProductoFiltro(QString,QString,QString,QString)\0"
+    "requestTempCatProducto()\0idCategoria,txtSearch\0"
+    "requestSearchProducto(QString,QString)\0"
+    "user,pw\0requestUserLogin(QString,QString)\0"
+    "nombre,apellido,genero,correo,pw\0"
+    "postResgiter(QString,QString,QString,QString,QString)\0"
     "reset()\0info,success,tipo\0"
     "onTwitterTimeline(QString,bool,QString)\0"
     "QByteArray\0toEncode\0encodeQString(QString)\0"
     "bool\0active\0error\0QString\0errorMessage\0"
     "bb::cascades::DataModel*\0model\0"
     "modelProducto\0modelMunicipio\0"
-    "modelProductoFiltro\0"
+    "modelProductoFiltro\0modelTemporada\0"
+    "modelSearchProducto\0"
 };
 
 void ApplicationUI::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -96,9 +110,13 @@ void ApplicationUI::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         case 4: _t->requestProducto((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 5: _t->requestMunicipio((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 6: _t->requestProductoFiltro((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< const QString(*)>(_a[4]))); break;
-        case 7: _t->reset(); break;
-        case 8: _t->onTwitterTimeline((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3]))); break;
-        case 9: { QByteArray _r = _t->encodeQString((*reinterpret_cast< const QString(*)>(_a[1])));
+        case 7: _t->requestTempCatProducto(); break;
+        case 8: _t->requestSearchProducto((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 9: _t->requestUserLogin((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 10: _t->postResgiter((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< const QString(*)>(_a[4])),(*reinterpret_cast< const QString(*)>(_a[5]))); break;
+        case 11: _t->reset(); break;
+        case 12: _t->onTwitterTimeline((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3]))); break;
+        case 13: { QByteArray _r = _t->encodeQString((*reinterpret_cast< const QString(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< QByteArray*>(_a[0]) = _r; }  break;
         default: ;
         }
@@ -137,9 +155,9 @@ int ApplicationUI::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 10)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 14;
     }
 #ifndef QT_NO_PROPERTIES
       else if (_c == QMetaObject::ReadProperty) {
@@ -152,22 +170,24 @@ int ApplicationUI::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 4: *reinterpret_cast< bb::cascades::DataModel**>(_v) = modelProducto(); break;
         case 5: *reinterpret_cast< bb::cascades::DataModel**>(_v) = modelMunicipio(); break;
         case 6: *reinterpret_cast< bb::cascades::DataModel**>(_v) = modelProductoFiltro(); break;
+        case 7: *reinterpret_cast< bb::cascades::DataModel**>(_v) = modelTemporada(); break;
+        case 8: *reinterpret_cast< bb::cascades::DataModel**>(_v) = modelSearchProducto(); break;
         }
-        _id -= 7;
+        _id -= 9;
     } else if (_c == QMetaObject::WriteProperty) {
-        _id -= 7;
+        _id -= 9;
     } else if (_c == QMetaObject::ResetProperty) {
-        _id -= 7;
+        _id -= 9;
     } else if (_c == QMetaObject::QueryPropertyDesignable) {
-        _id -= 7;
+        _id -= 9;
     } else if (_c == QMetaObject::QueryPropertyScriptable) {
-        _id -= 7;
+        _id -= 9;
     } else if (_c == QMetaObject::QueryPropertyStored) {
-        _id -= 7;
+        _id -= 9;
     } else if (_c == QMetaObject::QueryPropertyEditable) {
-        _id -= 7;
+        _id -= 9;
     } else if (_c == QMetaObject::QueryPropertyUser) {
-        _id -= 7;
+        _id -= 9;
     }
 #endif // QT_NO_PROPERTIES
     return _id;

@@ -6,6 +6,8 @@ Page {
     property string idCategoriaNMFS
     property variant idMunicipioN
     property variant idProductoNM
+    property variant validaruser
+    property variant hashkeyN
     
     Container {
         //Todo: fill me with QML
@@ -131,11 +133,14 @@ Page {
                     
                     onClicked: {
                         var filtroDetalle = filtroDetalle_page.createObject();
-                        //filtroDetalle.idMunicipioNM = idMunicipioN;
-                        //filtroDetalle.idProductoNMS = idProductoNM
-                        var idSondeo = dropDown.selectedOption.value
-                        var idArt    = dropDown2.selectedOption.value
-                        _timeline.requestProductoFiltro(idMunicipioN, idProductoNM, idSondeo, idArt);
+                        filtroDetalle.idMunicipioNM 	= idMunicipioN;
+                        filtroDetalle.idProductoNMS 	= idProductoNM;
+                        filtroDetalle.idEstablecimiento	= dropDown.selectedOption.value;
+                        filtroDetalle.idPresentacion    = dropDown2.selectedOption.value;
+                        filtroDetalle.vuser				= validaruser;
+                        filtroDetalle.hashkey			= hashkeyN;
+                        filtroDetalle.nextParameter();
+                        //_timeline.requestProductoFiltro(idMunicipioN, idProductoNM, idSondeo, idArt);
                         nPMenuDC.push(filtroDetalle);
                         
                         
@@ -150,20 +155,6 @@ Page {
     onCreationCompleted: {
         
         
-    }
-    
-    paneProperties: NavigationPaneProperties {
-        backButton: ActionItem {
-            title: "Atrás"
-            //imageSource: "asset:///images/customBackButtonImage.png"
-            
-            onTriggered: {
-                //_timeline.modelProducto.clear();
-                _timeline.modelMunicipio.clear();
-                _timeline.requestMunicipio(idCategoriaNM);
-                nPMenuDC.pop();
-            }
-        }
     }
     
     attachedObjects: [

@@ -83,9 +83,27 @@ lupdate_inclusion {
              $$quote($$BASEDIR/../assets/720x720/images/*.qml) \
              $$quote($$BASEDIR/../assets/720x720/images/*.js) \
              $$quote($$BASEDIR/../assets/720x720/images/*.qs) \
+             $$quote($$BASEDIR/../assets/Ajustes/*.qml) \
+             $$quote($$BASEDIR/../assets/Ajustes/*.js) \
+             $$quote($$BASEDIR/../assets/Ajustes/*.qs) \
+             $$quote($$BASEDIR/../assets/Favoritos/*.qml) \
+             $$quote($$BASEDIR/../assets/Favoritos/*.js) \
+             $$quote($$BASEDIR/../assets/Favoritos/*.qs) \
              $$quote($$BASEDIR/../assets/Observatorio/*.qml) \
              $$quote($$BASEDIR/../assets/Observatorio/*.js) \
              $$quote($$BASEDIR/../assets/Observatorio/*.qs) \
+             $$quote($$BASEDIR/../assets/Observatorio/SearchProducto/*.qml) \
+             $$quote($$BASEDIR/../assets/Observatorio/SearchProducto/*.js) \
+             $$quote($$BASEDIR/../assets/Observatorio/SearchProducto/*.qs) \
+             $$quote($$BASEDIR/../assets/ObservatorioTemporada/*.qml) \
+             $$quote($$BASEDIR/../assets/ObservatorioTemporada/*.js) \
+             $$quote($$BASEDIR/../assets/ObservatorioTemporada/*.qs) \
+             $$quote($$BASEDIR/../assets/ObservatorioTemporada/error/*.qml) \
+             $$quote($$BASEDIR/../assets/ObservatorioTemporada/error/*.js) \
+             $$quote($$BASEDIR/../assets/ObservatorioTemporada/error/*.qs) \
+             $$quote($$BASEDIR/../assets/ObservatorioTemporada/error/SearchProducto/*.qml) \
+             $$quote($$BASEDIR/../assets/ObservatorioTemporada/error/SearchProducto/*.js) \
+             $$quote($$BASEDIR/../assets/ObservatorioTemporada/error/SearchProducto/*.qs) \
              $$quote($$BASEDIR/../assets/Registro/*.qml) \
              $$quote($$BASEDIR/../assets/Registro/*.js) \
              $$quote($$BASEDIR/../assets/Registro/*.qs) \

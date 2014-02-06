@@ -41,7 +41,7 @@ void TwitterRequest::requestCatProducto()
     QNetworkAccessManager* networkAccessManager1 = new QNetworkAccessManager(this);
 
     //const QString queryUri5 = QString::fromLatin1("http://galerias.buzzcoapp.com/GaleriasApiREST/v1/categories/8")/*.arg(screenName)*/;
-    const QString queryUri1 = QString::fromLatin1("http://observatoriodeprecios.defensoria.gob.sv/ApiREST.php/v1/getCategorias");
+    const QString queryUri1 = QString::fromLatin1("http://observatoriodeprecios.defensoria.gob.sv/ApiREST.php/v1/getCategorias/0");
 
     QNetworkRequest request1(queryUri1);
 
@@ -106,6 +106,80 @@ void TwitterRequest::requestProductoFiltro(const QString &idMunicipio, const QSt
     connect(reply4, SIGNAL(finished()), this, SLOT(onTimelineReply()));
 }
 //! [3]
+
+//! [4]
+void TwitterRequest::requestTempCatProducto()
+{
+    QNetworkAccessManager* networkAccessManager5 = new QNetworkAccessManager(this);
+
+    const QString queryUri5 = QString::fromLatin1("http://observatoriodeprecios.defensoria.gob.sv/ApiREST.php/v1/getCategorias/1");
+
+    QNetworkRequest request5(queryUri5);
+
+    QNetworkReply* reply5 = networkAccessManager5->get(request5);
+
+    tipoconsumo = "temporadacategoriaproducto";
+
+    connect(reply5, SIGNAL(finished()), this, SLOT(onTimelineReply()));
+}
+//! [4]
+
+
+//! [5]
+void TwitterRequest::requestSearchProducto(const QString &idCategoria, const QString &txtSearch)
+{
+    QNetworkAccessManager* networkAccessManager6 = new QNetworkAccessManager(this);
+
+    const QString queryUri6 = QString::fromLatin1("http://observatoriodeprecios.defensoria.gob.sv/ApiREST.php/v1/getListaDeProductosPorCategoriaPorNombre/").append(idCategoria+"/"+txtSearch);
+
+    QNetworkRequest request6(queryUri6);
+
+    QNetworkReply* reply6 = networkAccessManager6->get(request6);
+
+    tipoconsumo = "searchproducto";
+
+    connect(reply6, SIGNAL(finished()), this, SLOT(onTimelineReply()));
+}
+//! [5]
+
+
+//! [6]
+void TwitterRequest::requestUserLogin(const QString &user, const QString &pw)
+{
+    QNetworkAccessManager* networkAccessManager7 = new QNetworkAccessManager(this);
+
+    const QString queryUri7 = QString::fromLatin1("http://observatoriodeprecios.defensoria.gob.sv/ApiREST.php/v1/getSesion/").append(user+"/"+pw);
+
+    QNetworkRequest request7(queryUri7);
+
+    QNetworkReply* reply7 = networkAccessManager7->get(request7);
+
+    tipoconsumo = "userlogin";
+
+    connect(reply7, SIGNAL(finished()), this, SLOT(onTimelineReply()));
+}
+//! [6]
+
+
+//Consumo WebService POST
+//! [1]
+void TwitterRequest::postResgiter(const QString &body)
+{
+
+    QNetworkAccessManager* networkAccessManagerPost1 = new QNetworkAccessManager(this);
+
+    const QString queryUriPost1 = QString::fromLatin1("http://observatoriodeprecios.defensoria.gob.sv/ApiREST.php/v1/postMiembro");
+
+    QNetworkRequest requestPost1(queryUriPost1);
+    requestPost1.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QNetworkReply* replyPost1 = networkAccessManagerPost1->post(requestPost1, body.toAscii());
+
+    tipoconsumo = "postRegister";
+
+    connect(replyPost1, SIGNAL(finished()), this, SLOT(onTimelineReply()));
+}
+//! [1]
 
 
 /*

@@ -81,7 +81,7 @@ Container {
                     topPadding: 23
                     
                     Label {
-                        text: qsTr(ListItemData.producto) + Retranslate.onLocaleOrLanguageChanged
+                        text: qsTr(ListItemData.nombre) + Retranslate.onLocaleOrLanguageChanged
                         horizontalAlignment: HorizontalAlignment.Center
                         textStyle.color: Color.create("#ffffff")
                         textStyle.fontSize: FontSize.XLarge

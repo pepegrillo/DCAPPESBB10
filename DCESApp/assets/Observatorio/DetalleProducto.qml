@@ -1,13 +1,14 @@
 import bb.cascades 1.0
+import bb.data 1.0
+import bb.system 1.0
 
 Page {
     property variant idCategoriaN
     property variant categoriaN
+    property variant uri
+    property variant validaruser
+    property variant hashkeyN
     
-    onCreationCompleted: {
-        //_timeline.requestProducto(idCategoriaN);
-        _timeline.modelProducto.clear();
-    }
     
     Container {
         //Todo: fill me with QML
@@ -16,7 +17,13 @@ Page {
         
         }
         background: Color.White
-        
+        ActivityIndicator {
+            id: dataLoadIndicator
+            preferredWidth: 400
+            preferredHeight: 400
+            horizontalAlignment: HorizontalAlignment.Center
+            verticalAlignment: VerticalAlignment.Center
+        }
         Container {
             layout: StackLayout {
             
@@ -62,13 +69,14 @@ Page {
                         repeatPattern: RepeatPattern.X
                     }
                 ]
-                /*Container {
+                Container {
                     horizontalAlignment: HorizontalAlignment.Center
                     verticalAlignment: VerticalAlignment.Center
                     topPadding: 20
                     leftPadding: 20
                     rightPadding: 20
                     TextField {
+                        id: searchProducto
                         horizontalAlignment: HorizontalAlignment.Center
                         hintText: qsTr("Búsqueda de productos...")
                         inputMode: TextFieldInputMode.Default
@@ -77,21 +85,32 @@ Page {
                         
                         input {
                             onSubmitted: {
-                                label.text = inputField.text
+                                var txtSearch = searchProducto.text
+                                //_timeline.requestSearchProducto(idCategoriaN,txtSearch);
+                                var searchproducto  = searchProducto_page.createObject();
+                                searchproducto.idCategoriaSearchN = idCategoriaN;
+                                searchproducto.categoriaSearchN   = categoriaN;
+                                searchproducto.nombreSearch 	  = txtSearch;
+                                searchproducto.vuser			  = validaruser;
+                                searchproducto.hashkey			  = hashkeyN;
+                                searchproducto.nextParameter();
+                                // Push the new Page.
+                                nPMenuDC.push(searchproducto);
                             }
                         }
                     
                     }
 
-                }*/
+                }
             }
             Container {                
                 layout: DockLayout {
                 
                 }
                 Label {
+                    id: lblerror
                     // Localized text with the dynamic translation and locale updates support
-                    text: qsTr(MensajeInfo.mensaje) + Retranslate.onLocaleOrLanguageChanged
+                    text: qsTr() + Retranslate.onLocaleOrLanguageChanged
                     textStyle.base: SystemDefaults.TextStyles.BigText
                     horizontalAlignment: HorizontalAlignment.Center
                     textStyle.color: Color.create("#000000")
@@ -101,7 +120,7 @@ Page {
                 ListView {
                     topPadding: 10
                     bottomPadding: 20
-	                dataModel: _timeline.modelProducto
+                    dataModel: dataModel
 	                listItemComponents: [
 	                    ListItemComponent {
 	                        type: "item"
@@ -125,8 +144,10 @@ Page {
                         municipio.idCategoriaNM = idCategoriaN;
                         municipio.categoriaNM   = categoriaN;
                         municipio.idProductoN   = chosenItem.idProducto;
-                        _timeline.requestMunicipio(idCategoriaN);
-	                    
+                        municipio.vuser			= validaruser;
+                        municipio.hashkey		= hashkeyN;
+                        //_timeline.requestMunicipio(idCategoriaN);
+                        municipio.nextParameter();
 	                    // Push the new Page.
                         nPMenuDC.push(municipio);
 	                }
@@ -136,19 +157,6 @@ Page {
         }
     
     }
-    paneProperties: NavigationPaneProperties {
-        backButton: ActionItem {
-            title: "Atrás"
-            //imageSource: "asset:///images/customBackButtonImage.png"
-            
-            onTriggered: {
-                _timeline.modelProducto.clear();
-                _timeline.model.clear();
-                _timeline.requestCatProducto();
-                nPMenuDC.pop();
-            }
-        }
-    }
     
     attachedObjects: [        
         // Create the ComponentDefinition that represents the custom
@@ -156,7 +164,55 @@ Page {
         ComponentDefinition {
             id: municipio_page
             source: "DetalleProductoFiltroM.qml"
+        },
+        ComponentDefinition {
+            id: searchProducto_page
+            source: "SearchProducto/SearchProducto.qml"
+        },
+        GroupDataModel {
+            id: dataModel
+            grouping: ItemGrouping.None
+            sortedAscending: true
+            sortingKeys: [ "nombre" ]
+        },
+        DataSource {
+            id: dataSource
+            remote: true
+            source: "http://observatoriodeprecios.defensoria.gob.sv/ApiREST.php/v1/getListaDeProductosPorCategoria/"+idCategoriaN;
+            type: DataSourceType.Json
+            onDataLoaded: {
+                dataModel.clear();
+                dataModel.insertList(data.response.msg);
+                dataLoadIndicator.stop();
+                console.log("Dirección URL "+dataSource.source);
+                var errorCode = String(data.response.errorCode);
+                console.log("Dirección DATA "+errorCode);
+                if (errorCode == "1"){
+                    lblerror.text = "No se encuentran datos disponibles."
+                } else {
+                    lblerror.text = ""
+                }
+            }
+            onError: {
+                dataLoadIndicator.stop();
+                myQmlDialog.show();
+            }
+        },
+        // System dialog displayed when the feed can not be shown.
+        SystemDialog {
+            id: myQmlDialog
+            title: "¡Algo malo ha pasado!"
+            body: "Se ha producido un error desafortunado con la descarga de los datos, es probable que no posea conexión a Internet."
         }
     ]
-
+    
+    function nextParameter(){
+	    onCreationCompleted: {
+	            dataLoadIndicator.start();
+	            dataSource.load();
+	            
+	    }
+    }
+    
+    
 }

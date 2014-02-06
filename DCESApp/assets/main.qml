@@ -15,13 +15,19 @@
  */
 
 import bb.cascades 1.0
+import bb.data 1.0
+
+import "data.js" as Data
+import bb.system 1.0
 
 NavigationPane {
     id: nPMenuDC
+    objectName: "nPMenuDC"
     backButtonsVisible: true
     
     
 	Page {
+	    id: rootPage
 	    
 	    Container {
 	        //Todo: fill me with QML
@@ -84,7 +90,9 @@ NavigationPane {
                                 textStyle.color: Color.create("#aac768")
                             }
                             TextField {
+                                id: user
                                 horizontalAlignment: HorizontalAlignment.Center
+                                text: "blackberry6@blackberry.com"
                                 hintText: qsTr("usuario@correo.com")
                                 inputMode: TextFieldInputMode.EmailAddress
                                 input.submitKey: SubmitKey.Next
@@ -93,14 +101,18 @@ NavigationPane {
                             }
                             
                             Label {
+                                id: label_pw
                                 // Localized text with the dynamic translation and locale updates support
+                                //text: qsTr("Contraseña") + Retranslate.onLocaleOrLanguageChanged
                                 text: qsTr("Contraseña") + Retranslate.onLocaleOrLanguageChanged
                                 textStyle.base: SystemDefaults.TextStyles.TitleText
                                 horizontalAlignment: HorizontalAlignment.Left
                                 textStyle.color: Color.create("#aac768")
                             }
                             TextField {
+                                id: pw
                                 horizontalAlignment: HorizontalAlignment.Center
+                                text: "blackberry6"
                                 hintText: qsTr("Micontraseña*1")
                                 inputMode: TextFieldInputMode.Password
                                 input.submitKey: SubmitKey.Submit
@@ -111,6 +123,7 @@ NavigationPane {
                         }
                         
                         Container {
+                            id: login
                             topPadding: 50
                             leftPadding: 70
                             rightPadding: leftPadding
@@ -125,8 +138,12 @@ NavigationPane {
                                 pressedImageSource: "asset:///images/btnLogin1.png"
                                 
                                 onClicked: {
-                                    var MenuPrincipal = menuPrincipal_page.createObject();
-                                    nPMenuDC.push(MenuPrincipal);
+                                    var User = user.text
+                                    var Pw	 = pw.text
+                                    var PwSha = Data.SHA1(Pw);
+                                    console.log("PwSha "+PwSha);
+                                    
+                                    Data.getDataUser(User,PwSha);
                                 }
                             }
                             ImageButton {
@@ -138,7 +155,8 @@ NavigationPane {
                                     nPMenuDC.push(Registro);
                                 }
                             }
-
+                            
+                            
                         }
                         
                         Container {
@@ -156,8 +174,10 @@ NavigationPane {
                                 pressedImageSource: "asset:///images/btnSaltar1.png"
                                 
                                 onClicked: {
-                                    var MenuPrincipalOut = menuPrincipalOut_page.createObject();
-                                    nPMenuDC.push(MenuPrincipalOut);
+                                    var menuprincipalout = menuPrincipalOut_page.createObject();
+                                    menuprincipalout.validaruser = "1";
+                                    menuprincipalout.validarUserPage("1");
+                                    nPMenuDC.push(menuprincipalout);
                                 }
                             }
                         
@@ -178,7 +198,21 @@ NavigationPane {
     attachedObjects: [
         // Create the ComponentDefinition that represents the custom
         // component my pages *.qml
-        
+        SystemToast {
+                id: myQmlToast
+                body: "Usuario y/o contaseña incorrecta."
+                /*onFinished: {
+                    Application.quit();
+                }*/
+        },
+        SystemToast {
+            id: loginToast
+            body: "Iniciando Sesión..."
+        },
+        SystemToast {
+            id: bienvenidoToast
+            body: "¡Bienvenido!"
+        },
         ComponentDefinition {
             id: registro_page
             source: "Registro/registro.qml"
@@ -190,17 +224,33 @@ NavigationPane {
         ComponentDefinition {
             id: menuPrincipalOut_page
             source: "MenuPrincipal.qml"
+        },
+        ComponentDefinition {
+            id: loginPage_page
+            source: "MenuPrincipal.qml"
         }
     ]
+    
+    onCreationCompleted: {
+        //serviceDataSource.load();
+        //_timeline.requestUserLogin("blackberry6@blackberry.com","blackberry6");
+    }
     onPopTransitionEnded: {
         page.destroy();
     }
     peekEnabled: false
-    paneProperties: NavigationPaneProperties {
+    /*paneProperties: NavigationPaneProperties {
         backButton: ActionItem {
-
+            title: "First page"
+            onTriggered: {
+                nPMenuDC.pop();
+            }
         }
 
-    }
+    }*/
+    
+    
+    
+    
 
 }

@@ -83,6 +83,8 @@ ApplicationUI::ApplicationUI(QObject *parent)
 	, m_modelProducto(new GroupDataModel(QStringList() << "nombre", this))
 	, m_modelMunicipio(new GroupDataModel(QStringList() << "municipio", this))
 	, m_modelProductoFiltro(new GroupDataModel(QStringList() << "producto", this))
+	, m_modelTemporada(new GroupDataModel(QStringList() << "idCategoria", this))
+	, m_modelSearchProducto(new GroupDataModel(QStringList() << "nombre", this))
 	//, m_propertyMap(new QDeclarativePropertyMap(this))
 	/*, m_invokeManager(new InvokeManager(this))*/
 {
@@ -95,6 +97,8 @@ ApplicationUI::ApplicationUI(QObject *parent)
     m_modelProducto->setGrouping(ItemGrouping::None);
     m_modelMunicipio->setGrouping(ItemGrouping::None);
     m_modelProductoFiltro->setGrouping(ItemGrouping::None);
+    m_modelTemporada->setGrouping(ItemGrouping::None);
+    m_modelSearchProducto->setGrouping(ItemGrouping::None);
 
     //m_property->parent();
 
@@ -113,6 +117,8 @@ ApplicationUI::ApplicationUI(QObject *parent)
 
 
     root = qml->createRootObject<AbstractPane>();
+
+
 
     //DropDown *dropDown = root->findChild<DropDown>("myDropDown");
 
@@ -189,6 +195,73 @@ void ApplicationUI::requestProductoFiltro(const QString &idMunicipio, const QStr
     emit activeChanged();
 }
 
+void ApplicationUI::requestTempCatProducto()
+{
+    if (m_active)
+        return;
+
+
+    TwitterRequest* request5 = new TwitterRequest(this);
+    connect(request5, SIGNAL(complete(QString, bool, QString)), this, SLOT(onTwitterTimeline(QString, bool, QString)));
+    request5->requestTempCatProducto();
+
+    m_active = true;
+    emit activeChanged();
+}
+
+void ApplicationUI::requestSearchProducto(const QString &idCategoria, const QString &txtSearch)
+{
+    if (m_active)
+        return;
+
+
+    TwitterRequest* request6 = new TwitterRequest(this);
+    connect(request6, SIGNAL(complete(QString, bool, QString)), this, SLOT(onTwitterTimeline(QString, bool, QString)));
+    request6->requestSearchProducto(idCategoria,txtSearch);
+
+    m_active = true;
+    emit activeChanged();
+}
+
+void ApplicationUI::requestUserLogin(const QString &user, const QString &pw)
+{
+	QCryptographicHash hash(QCryptographicHash::Sha1);
+	hash.addData(pw.toUtf8());
+	pwHash = QString(hash.result().toHex());
+
+	qDebug() << "Usuario txt>"+user;
+	qDebug() << "PASSWORD HASHEADO>"+pw+"<HOLA QUE HACE>"+pwHash;
+
+    TwitterRequest* request7 = new TwitterRequest(this);
+    connect(request7, SIGNAL(complete(QString, bool, QString)), this, SLOT(onTwitterTimeline(QString, bool, QString)));
+    request7->requestUserLogin(user,pwHash);
+}
+
+
+
+// Web Service Post
+//! [1]
+void ApplicationUI::postResgiter(const QString &nombre, const QString &apellido, const QString &genero, const QString &correo, const QString &pw)
+{
+    if (m_active)
+        return;
+
+    TwitterRequest* requestPost1 = new TwitterRequest(this);
+    //Aca es donde se arma el json� el identificador es el deltelefono, para cada post mira el cuerpo que tienen en el postman y asi lo tenes que armar.
+    const QString quote = "\"";
+    const QString body1 = ("{"+quote+"nombre"+quote+": "+quote+nombre+quote+
+    						","+quote+"apellido"+quote+": "+quote+apellido+quote+
+    						","+quote+"sexo"+quote+": "+quote+genero+quote+
+    						","+quote+"correo"+quote+": "+quote+correo+quote+
+    						","+quote+"clave"+quote+": "+quote+pw+quote+"}");
+    connect(requestPost1, SIGNAL(complete(QString, bool, QString)), this, SLOT(onTwitterTimeline(QString, bool, QString)));
+    requestPost1->postResgiter(body1);
+    qDebug() << "PRUEBA JSON POST USUARIO REGISTRADO " + body1;
+
+    m_active = true;
+    emit activeChanged();
+}
+//! [1]
 
 /*
  * App::onTwitterTimeline(const QString &info, bool success)
@@ -223,6 +296,7 @@ void ApplicationUI::onTwitterTimeline(const QString &info, bool success, const Q
 }
 //! [3]
 
+
 /*
  * App::parseResponse()
  *
@@ -235,6 +309,7 @@ void ApplicationUI::parseResponse(const QString &response, const QString &tipo)
     m_modelProducto->clear();
     m_modelMunicipio->clear();
     m_modelProductoFiltro->clear();
+    m_modelSearchProducto->clear();
 
     if (response.trimmed().isEmpty())
         return;
@@ -339,8 +414,64 @@ void ApplicationUI::parseResponse(const QString &response, const QString &tipo)
 
 			qml->setContextProperty("MensajeInfo", propertyMap);
 		}
-    }
+    }else if (tipo == "temporadacategoriaproducto"){
 
+    	if (tipoCodigoId == "0"){
+
+    		const QVariantList categorias2 = categorias["msg"].toList();
+
+			foreach (const QVariant &msg, categorias2) {
+				m_modelTemporada->insert(msg.toMap());
+				//qDebug() << "FEED "+msg.toString()+"\r";
+			}
+			QDeclarativePropertyMap* propertyMap = new QDeclarativePropertyMap;
+			propertyMap->insert("mensaje", QVariant(QString("")));
+			qml->setContextProperty("MensajeInfo", propertyMap);
+
+    	}else{
+
+			QDeclarativePropertyMap* propertyMap = new QDeclarativePropertyMap;
+			propertyMap->insert("mensaje", QVariant("No se ha obtenido ningun dato"));
+
+			qml->setContextProperty("MensajeInfo", propertyMap);
+		}
+    }else if (tipo == "searchproducto"){
+
+    	if (tipoCodigoId == "0"){
+
+    		const QVariantList categorias2 = categorias["msg"].toList();
+
+			foreach (const QVariant &msg, categorias2) {
+				m_modelSearchProducto->insert(msg.toMap());
+				//qDebug() << "FEED "+msg.toString()+"\r";
+			}
+			QDeclarativePropertyMap* propertyMap = new QDeclarativePropertyMap;
+			propertyMap->insert("mensaje", QVariant(QString("")));
+			qml->setContextProperty("MensajeInfo", propertyMap);
+
+    	}else{
+
+			QDeclarativePropertyMap* propertyMap = new QDeclarativePropertyMap;
+			propertyMap->insert("mensaje", QVariant("No se ha obtenido ningun dato"));
+
+			qml->setContextProperty("MensajeInfo", propertyMap);
+		}
+    }else if (tipo == "userlogin"){
+
+
+
+
+
+
+    }else{
+
+		SystemToast *toast = new SystemToast(this);
+
+		toast->setBody("Usuario y/o contraseña incorrecto");
+		toast->setPosition(SystemUiPosition::MiddleCenter);
+		toast->show();
+		qDebug() << "No existe este usuario de Mi vida>";
+	}
 }
 
 
@@ -378,6 +509,16 @@ bb::cascades::DataModel* ApplicationUI::modelMunicipio() const
 bb::cascades::DataModel* ApplicationUI::modelProductoFiltro() const
 {
     return m_modelProductoFiltro;
+}
+
+bb::cascades::DataModel* ApplicationUI::modelTemporada() const
+{
+    return m_modelTemporada;
+}
+
+bb::cascades::DataModel* ApplicationUI::modelSearchProducto() const
+{
+    return m_modelSearchProducto;
 }
 
 

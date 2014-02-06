@@ -1,11 +1,11 @@
 import bb.cascades 1.0
+import bb.data 1.0
+import bb.system 1.0
 
 Page {
     
-    onCreationCompleted: {
-        _timeline.requestCatProducto();
-        //_timeline.model.clear();
-    }
+    property variant vuser
+    property variant hashkey
     
     Container {
         //Todo: fill me with QML
@@ -14,7 +14,13 @@ Page {
         
         }
         background: Color.White
-        
+        ActivityIndicator {
+            id: dataLoadIndicator
+            preferredWidth: 400
+            preferredHeight: 400
+            horizontalAlignment: HorizontalAlignment.Center
+            verticalAlignment: VerticalAlignment.Center
+        }
         Container {
 	        id: containerScroll
 	        horizontalAlignment: HorizontalAlignment.Fill
@@ -59,7 +65,7 @@ Page {
                 /*dataModel: XmlDataModel {
                 	source: "../model.xml"
                 }*/
-                dataModel: _timeline.model
+                dataModel: dataModel
                 listItemComponents: [
                     ListItemComponent {
                     	type: "item"
@@ -82,7 +88,11 @@ Page {
                     var detalle  = detalle_page.createObject();
                     detalle.idCategoriaN = chosenItem.idCategoria;
                     detalle.categoriaN   = chosenItem.categoria;
-                    _timeline.requestProducto(chosenItem.idCategoria);
+                    detalle.validaruser  = vuser;
+                    detalle.hashkeyN	 = hashkey;
+                    //detalle.uri			 = "http://observatoriodeprecios.defensoria.gob.sv/ApiREST.php/v1/getListaDeProductosPorCategoria/"+chosenItem.idCategoria;
+                    detalle.nextParameter();
+                    //_timeline.requestProducto(chosenItem.idCategoria);
                     // Push the new Page.
                     nPMenuDC.push(detalle);
                 }
@@ -98,7 +108,40 @@ Page {
         ComponentDefinition {
             id: detalle_page
             source: "DetalleProducto.qml"
+        },
+        GroupDataModel {
+            id: dataModel
+            grouping: ItemGrouping.None
+            sortedAscending: true
+            sortingKeys: [ "categoria" ]
+        },
+        DataSource {
+            id: dataSource
+            remote: true
+            source: "http://observatoriodeprecios.defensoria.gob.sv/ApiREST.php/v1/getCategorias/0"
+            type: DataSourceType.Json
+            onDataLoaded: {
+                dataModel.clear();
+                dataModel.insertList(data.response.msg);
+                dataLoadIndicator.stop();
+            }
+            onError: {
+                dataLoadIndicator.stop();
+                myQmlDialog.show();
+            }
+        },
+        // System dialog displayed when the feed can not be shown.
+        SystemDialog {
+            id: myQmlDialog
+            title: "¡Algo malo ha pasado!"
+            body: "Se ha producido un error desafortunado con la descarga de los datos, es probable que no posea conexión a Internet."
+            
         }
     ]
+    
+    onCreationCompleted: {
+        dataLoadIndicator.start();
+        dataSource.load();
+    }
     
 }

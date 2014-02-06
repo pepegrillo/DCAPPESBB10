@@ -57,6 +57,8 @@ Q_PROPERTY(bb::cascades::DataModel* model READ model CONSTANT)
 Q_PROPERTY(bb::cascades::DataModel* modelProducto READ modelProducto CONSTANT)
 Q_PROPERTY(bb::cascades::DataModel* modelMunicipio READ modelMunicipio CONSTANT)
 Q_PROPERTY(bb::cascades::DataModel* modelProductoFiltro READ modelProductoFiltro CONSTANT)
+Q_PROPERTY(bb::cascades::DataModel* modelTemporada READ modelTemporada CONSTANT)
+Q_PROPERTY(bb::cascades::DataModel* modelSearchProducto READ modelSearchProducto CONSTANT)
 
 public:
 	ApplicationUI(QObject *parent = 0);
@@ -81,6 +83,17 @@ public Q_SLOTS:
 	void requestMunicipio (const QString &idCategoria);
 
 	void requestProductoFiltro(const QString &idMunicipio, const QString &idProducto, const QString &idEstablecimiento, const QString &idPresentacion);
+
+	void requestTempCatProducto();
+
+	void requestSearchProducto(const QString &idCategoria, const QString &txtSearch);
+
+	void requestUserLogin(const QString &user, const QString &pw);
+
+
+	// WEB SERVICE POST
+
+	void postResgiter(const QString &nombre, const QString &apellido, const QString &genero, const QString &correo, const QString &pw);
 
 	/*
 	 * Allows the QML to reset the state of the application
@@ -130,6 +143,8 @@ private:
 	bb::cascades::DataModel* modelProducto() const;
 	bb::cascades::DataModel* modelMunicipio() const;
 	bb::cascades::DataModel* modelProductoFiltro() const;
+	bb::cascades::DataModel* modelTemporada() const;
+	bb::cascades::DataModel* modelSearchProducto() const;
 	//QDeclarativePropertyMap* propertyMap() const;
 
 
@@ -143,7 +158,11 @@ private:
 	bb::cascades::GroupDataModel* m_modelProducto;
 	bb::cascades::GroupDataModel* m_modelMunicipio;
 	bb::cascades::GroupDataModel* m_modelProductoFiltro;
+	bb::cascades::GroupDataModel* m_modelTemporada;
+	bb::cascades::GroupDataModel* m_modelSearchProducto;
 
+
+	QString pwHash;
 
 	//const QString& idCuponV;
 
@@ -152,7 +171,9 @@ private:
 
 	bb::cascades::AbstractPane *root;
 
-	//bb::cascades::Label *myLabel;
+	bb::cascades::NavigationPane *m_pane;
+
+	bb::cascades::Page *m_page;
 
 
 	/**

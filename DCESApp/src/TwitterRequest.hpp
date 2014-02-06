@@ -47,6 +47,15 @@ public:
 
 	void requestProductoFiltro(const QString &idMunicipio, const QString &idProducto, const QString &idEstablecimiento, const QString &idPresentacion);
 
+	void requestTempCatProducto();
+
+	void requestSearchProducto(const QString &idCategoria, const QString &txtSearch);
+
+	void requestUserLogin(const QString &user, const QString &pw);
+
+
+	// Web Services POST
+	void postResgiter(const QString &body);
 
 	Q_SIGNALS:
 	/*
