@@ -53,14 +53,12 @@ Container {
             
             Container{
                 
-                background: red.imagePaint
-                attachedObjects: [
-                    ImagePaintDefinition {
-                        id: red
-                        imageSource: "asset:///images/imgGreen.png"
-                        repeatPattern: RepeatPattern.X
-                    }
-                ]
+                ImageView {
+                    id: bgNoData
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    verticalAlignment: VerticalAlignment.Fill
+                    imageSource: "asset:///images/imgList"+ListItemData.idCategoria+".png"
+                }
                 horizontalAlignment: HorizontalAlignment.Fill
                 
                 layout: DockLayout {

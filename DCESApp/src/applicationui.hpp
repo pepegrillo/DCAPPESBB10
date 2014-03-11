@@ -30,6 +30,14 @@
 
 #include <bb/cascades/CustomControl>
 
+#include <bb/system/SystemToast>
+#include <bb/system/SystemDialog>
+#include <bb/system/SystemUiResult>
+#include <bb/system/SystemPrompt.hpp>
+#include <bb/system/SystemUiInputField.hpp>
+#include <bb/system/SystemUiInputMode.hpp>
+#include <bb/system/SystemUiInputField>
+
 using namespace bb::cascades;
 
 namespace bb {
@@ -65,16 +73,21 @@ public:
 
 	// Converts the passed QString to an UTF-8 encoded QByteArray
 	    Q_INVOKABLE QByteArray encodeQString(const QString& toEncode) const;
-
+	    Q_INVOKABLE void showDialog(const QString &idlista, const QString &idestablecimiento, const QString &hashkey);
 
 
 /*public slots:
     void handlePushButtonClicked();
     void handlePopTransitionEnded(bb::cascades::Page* page);*/
 
-
+	    //public slots:
+	        //void onDialogFinished(bb::system::SystemUiResult::Type type);
 
 public Q_SLOTS:
+
+	void onDialogFinished(bb::system::SystemUiResult::Type type);
+
+	void postEstablecimiento(const QString &idlista, const QString &idestablecimiento, const QString &hashkey);
 
 	void requestCatProducto();
 
@@ -146,6 +159,8 @@ private:
 	bb::cascades::DataModel* modelTemporada() const;
 	bb::cascades::DataModel* modelSearchProducto() const;
 	//QDeclarativePropertyMap* propertyMap() const;
+
+
 
 
 private:

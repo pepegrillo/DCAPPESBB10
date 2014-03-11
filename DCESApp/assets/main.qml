@@ -35,7 +35,7 @@ NavigationPane {
 	        layout: DockLayout {
              
             }
-	        
+	        background: Color.White
             ImageView {
                 imageSource: "asset:///images/bgBarra.png"
                 horizontalAlignment: HorizontalAlignment.Fill
@@ -66,7 +66,7 @@ NavigationPane {
                         horizontalAlignment: HorizontalAlignment.Center
                         
                         Container {
-                            bottomPadding: 50
+                            
                             horizontalAlignment: HorizontalAlignment.Center
                             
                             ImageView {
@@ -74,11 +74,21 @@ NavigationPane {
                                 loadEffect: ImageViewLoadEffect.FadeZoom
                                 horizontalAlignment: HorizontalAlignment.Right
                             
-                            
                             }
+                            ImageButton {
+                                defaultImageSource: "asset:///images/logoDC2.png"
+                                pressedImageSource: "asset:///images/logoDC1.png"
+                                horizontalAlignment: HorizontalAlignment.Center
+                                onClicked: {
+                                    var webDC = webDC_page.createObject();
+                                    nPMenuDC.push(webDC);
+                                }
+                            }
+
                         }
                         
                         Container {
+                            topPadding: 25
                             leftPadding: 70
                             rightPadding: leftPadding
                             horizontalAlignment: HorizontalAlignment.Center
@@ -92,12 +102,12 @@ NavigationPane {
                             TextField {
                                 id: user
                                 horizontalAlignment: HorizontalAlignment.Center
-                                text: "blackberry6@blackberry.com"
+                                text: "alopez@i-moves.com"
                                 hintText: qsTr("usuario@correo.com")
                                 inputMode: TextFieldInputMode.EmailAddress
                                 input.submitKey: SubmitKey.Next
-                                textStyle.color: Color.create("#2e559c")
-                                bottomMargin: 30
+                                textStyle.color: Color.create("#2e559c")                                
+                                
                             }
                             
                             Label {
@@ -112,7 +122,7 @@ NavigationPane {
                             TextField {
                                 id: pw
                                 horizontalAlignment: HorizontalAlignment.Center
-                                text: "blackberry6"
+                                text: "alopez"
                                 hintText: qsTr("Micontraseña*1")
                                 inputMode: TextFieldInputMode.Password
                                 input.submitKey: SubmitKey.Submit
@@ -124,7 +134,7 @@ NavigationPane {
                         
                         Container {
                             id: login
-                            topPadding: 50
+                            topPadding: 25
                             leftPadding: 70
                             rightPadding: leftPadding
                             horizontalAlignment: HorizontalAlignment.Center
@@ -138,12 +148,18 @@ NavigationPane {
                                 pressedImageSource: "asset:///images/btnLogin1.png"
                                 
                                 onClicked: {
-                                    var User = user.text
-                                    var Pw	 = pw.text
-                                    var PwSha = Data.SHA1(Pw);
-                                    console.log("PwSha "+PwSha);
-                                    
-                                    Data.getDataUser(User,PwSha);
+                                    if (user.text.length > 2 && pw.text.length > 2) {
+	                                    var User = user.text
+	                                    var Pw	 = pw.text
+	                                    var PwSha = Data.SHA1(Pw);
+	                                    console.log("PwSha "+PwSha);
+	                                    
+	                                    Data.getDataUser(User,PwSha);
+	                                    user.text = "";
+	                                    pw.text = "";
+	                                } else {
+                                        errorLogin.show();
+	                                }
                                 }
                             }
                             ImageButton {
@@ -160,7 +176,7 @@ NavigationPane {
                         }
                         
                         Container {
-                            topPadding: 20
+                            topPadding: 5
                             leftPadding: 70
                             rightPadding: leftPadding
                             horizontalAlignment: HorizontalAlignment.Right
@@ -201,9 +217,9 @@ NavigationPane {
         SystemToast {
                 id: myQmlToast
                 body: "Usuario y/o contaseña incorrecta."
-                /*onFinished: {
-                    Application.quit();
-                }*/
+                onFinished: {
+                    //Application.quit();
+                }
         },
         SystemToast {
             id: loginToast
@@ -212,6 +228,10 @@ NavigationPane {
         SystemToast {
             id: bienvenidoToast
             body: "¡Bienvenido!"
+        },
+        SystemToast {
+            id: errorLogin
+            body: "Digite Usuario y Contraseña"
         },
         ComponentDefinition {
             id: registro_page
@@ -228,6 +248,10 @@ NavigationPane {
         ComponentDefinition {
             id: loginPage_page
             source: "MenuPrincipal.qml"
+        },
+        ComponentDefinition {
+            id: webDC_page
+            source: "WebDC.qml"
         }
     ]
     

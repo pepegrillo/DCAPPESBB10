@@ -52,15 +52,23 @@ Container {
             
             
             Container{
-                
-                background: red.imagePaint
+                id: listaCategoria
+                //background: Color.create("#c0392b")
+                // The background image
+                ImageView {
+                    id: bgNoData
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    verticalAlignment: VerticalAlignment.Fill
+                    imageSource: "asset:///images/imgList"+ListItemData.idCategoria+".png"
+                }
+                /*background: red.imagePaint
                 attachedObjects: [
                     ImagePaintDefinition {
                         id: red
                         imageSource: "asset:///images/imgGreen.png"
                         repeatPattern: RepeatPattern.X
                     }
-                ]
+                ]*/
                 horizontalAlignment: HorizontalAlignment.Fill
                 
                 layout: DockLayout {
@@ -137,6 +145,7 @@ Container {
     // Connect the onActivedChanged signal to the highlight function
     ListItem.onActivationChanged : {        
         setHighlight(ListItem.active);
+        
     } 
     
     // Connect the onSelectedChanged signal to the highlight function

@@ -4,6 +4,8 @@ import bb.system 1.0
 Page {
     
     property variant hashkey
+    property variant nombre
+    property variant apellido
     
     Container {
         
@@ -62,17 +64,12 @@ Page {
                 Container {
                     horizontalAlignment: HorizontalAlignment.Right
                     verticalAlignment: VerticalAlignment.Center
-                    topPadding: 5
-                    bottomPadding: -15
-                    leftPadding: 20
                     rightPadding: 20
-                    ImageButton {
-                        defaultImageSource: "asset:///images/btnLogout.png"
-                        pressedImageSource: "asset:///images/btnLogout1.png"
-                        
-                        onClicked: {
-                            logout.show();
-                        }
+                    topPadding: 8
+                    Label {
+                        id: nombreUsuario
+                        text: "Usuario: "+nombre+" "+apellido
+                        textStyle.color: Color.White
                     }
                 
                 }
@@ -85,12 +82,11 @@ Page {
                 horizontalAlignment: HorizontalAlignment.Center
                 topMargin: 50.0
                 ImageButton {
-                    defaultImageSource: "asset:///images/btnChangePoints.png"
-                    pressedImageSource: "asset:///images/btnChangePoints1.png"
+                    defaultImageSource: "asset:///images/btnCerrarSesion.png"
+                    pressedImageSource: "asset:///images/btnCerrarSesion1.png"
                     
                     onClicked: {
-                        //var MenuPrincipalOut = menuPrincipalOut_page.createObject();
-                        //nPMenuDC.push(MenuPrincipalOut);
+                        logout.show();
                     }
                 }
                 
@@ -125,9 +121,15 @@ Page {
             body: "¿Realmente quieres cerrar sesión?"
             onFinished: {
                 if (logout.confirmButton) {
+                    waitLogout.show();
                     nPMenuDC.navigateTo(rootPage);
                 }
             }
+        },
+        SystemToast {
+            id: waitLogout
+            body: "Cerranso Sesión..."
+
         }
     ]    
     

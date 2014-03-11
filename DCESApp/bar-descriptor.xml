@@ -30,7 +30,7 @@
 
     <!-- The name that is displayed in the BlackBerry 10 application installer.
          May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <name>DCESApp</name>
+    <name>DCES App</name>
 
     <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade.
          Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
@@ -54,12 +54,13 @@
     <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
     <author>imoves_sv</author>
     <authorId>gYAAgOkVWEPvP_Mq-Vg5gO5fiJY</authorId>
+    <splashScreens>
+       <image>splashDC.png</image>
+       <image>splashDC720.png</image>
+    </splashScreens>
     <icon>
        <image>icon.png</image>
     </icon>
-    <splashScreens>
-       <image>splashDC.png</image>
-    </splashScreens>
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/DCESApp" entry="true" type="Qnx/Elf">DCESApp</asset>
@@ -86,6 +87,7 @@
         <autoOrients>false</autoOrients>
         <systemChrome>none</systemChrome>
         <transparent>false</transparent>
+        <cascadesTheme>bright</cascadesTheme>
     </initialWindow>
 
     <!--  The icon for the application, which should be 114x114. -->
@@ -96,8 +98,9 @@
     <asset path="translations" dest="qm">
         <include name="*.qm"/>
     </asset>
-    <asset path="assets/images/splashDC.png">splashDC.png</asset>
     <asset path="assets/images/icon.png">icon.png</asset>
+    <asset path="assets/images/splashDC.png">splashDC.png</asset>
+    <asset path="assets/720x720/images/splashDC720.png">splashDC720.png</asset>
 
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>

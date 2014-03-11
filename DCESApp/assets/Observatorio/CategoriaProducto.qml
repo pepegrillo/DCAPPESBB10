@@ -13,7 +13,13 @@ Page {
         layout: DockLayout {
         
         }
-        background: Color.White
+        // The background image
+        ImageView {
+            id: bgNoData
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+            imageSource: "asset:///images/siData.png"
+        }
         ActivityIndicator {
             id: dataLoadIndicator
             preferredWidth: 400
@@ -113,7 +119,7 @@ Page {
             id: dataModel
             grouping: ItemGrouping.None
             sortedAscending: true
-            sortingKeys: [ "categoria" ]
+            sortingKeys: [ "idCategoria" ]
         },
         DataSource {
             id: dataSource
@@ -124,6 +130,15 @@ Page {
                 dataModel.clear();
                 dataModel.insertList(data.response.msg);
                 dataLoadIndicator.stop();
+                console.log("Dirección URL "+dataSource.source);
+                var errorCode = String(data.response.errorCode);
+                console.log("Dirección DATA "+errorCode);
+                if (errorCode == "1"){
+                    bgNoData.imageSource = "asset:///images/noData1.png"
+                    
+                } else {
+                    bgNoData.imageSource = "asset:///images/siData.png"
+                }
             }
             onError: {
                 dataLoadIndicator.stop();

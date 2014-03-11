@@ -129,6 +129,35 @@ ApplicationUI::ApplicationUI(QObject *parent)
 }
 //! [0]
 
+void ApplicationUI::postEstablecimiento(const QString &idlista, const QString &idestablecimiento, const QString &hashkey)
+{
+
+}
+
+// A public function to display a SystemDialog in your UI
+void ApplicationUI::showDialog(const QString &idlista, const QString &idestablecimiento, const QString &hashkey)
+{
+
+	SystemDialog *dialog = new SystemDialog();
+		SystemUiButton *yesBtn = dialog->confirmButton();
+		yesBtn->setLabel("Ok");
+		SystemUiButton *noBtn = dialog->cancelButton();
+		noBtn->setLabel(QString::null);
+		dialog->setBody(idlista+" > "+idestablecimiento+" > "+hashkey);
+		dialog->show();
+		QObject::connect(dialog, SIGNAL(finished(bb::system::SystemUiResult::Type)), this,
+				SLOT(onDialogFinished(bb::system::SystemUiResult::Type)));
+}
+
+void ApplicationUI::onDialogFinished(bb::system::SystemUiResult::Type type) {
+	//2 : Yes Button result
+	if (type == 2) {
+		//bb::Application::instance()->exit(0);
+		//qDebug() << idlista+" > "+idestablecimiento+" > "+hashkey;
+	}
+}
+
+
 //! [1]
 void ApplicationUI::reset()
 {

@@ -52,7 +52,7 @@ Dialog {
                 ImageView {            
                     verticalAlignment: VerticalAlignment.Center;
                     horizontalAlignment: HorizontalAlignment.Right;
-                    imageSource: "asset:///images/close_button.png"
+                    imageSource: "asset:///images/ic_delete.png"
                     onTouch: {
                         back();
                         dialog.close();
@@ -72,7 +72,7 @@ Dialog {
                     input {
                         submitKey: SubmitKey.Submit;
                         onSubmitted: {
-                            cppObj.onEmailDoneClicked(name.text, "");
+                            //cppObj.onEmailDoneClicked(name.text, "");
                         }
                     }         
                 }
@@ -84,7 +84,7 @@ Dialog {
                     defaultImageSource: "asset:///images/btnAceptar.png"
                     horizontalAlignment: HorizontalAlignment.Center;
                     onClicked: {
-                        cppObj.onEmailDoneClicked(name.text, "");
+                        //cppObj.onEmailDoneClicked(name.text, "");
                         doneButton.textAdded();
                     }
                     

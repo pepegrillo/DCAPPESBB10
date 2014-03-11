@@ -16,7 +16,13 @@ Page {
         layout: DockLayout {
         
         }
-        background: Color.White
+        // The background image
+        ImageView {
+            id: bgNoData
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+            imageSource: "asset:///images/siData.png"
+        }
         ActivityIndicator {
             id: dataLoadIndicator
             preferredWidth: 400
@@ -188,9 +194,10 @@ Page {
                 var errorCode = String(data.response.errorCode);
                 console.log("Dirección DATA "+errorCode);
                 if (errorCode == "1"){
-                    lblerror.text = "No se encuentran datos disponibles."
+                    bgNoData.imageSource = "asset:///images/noData1.png"
+                
                 } else {
-                    lblerror.text = ""
+                    bgNoData.imageSource = "asset:///images/siData.png"
                 }
             }
             onError: {

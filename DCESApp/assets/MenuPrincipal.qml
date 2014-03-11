@@ -81,13 +81,29 @@ Page {
                     Container {
                         bottomPadding: 10
                         horizontalAlignment: HorizontalAlignment.Center
-                        
+                        Label {
+                            id: listaNo
+                            text: ""
+                            visible: false
+                        }
                         ImageButton {
                             id: btnLista
                             defaultImageSource: "asset:///images/menu/btnLista.png"
                             pressedImageSource: "asset:///images/menu/btnLista1.png"
                             disabledImageSource: "asset:///images/menu/btnLista.png"
-                        
+                            
+                            onClicked: {
+                                if (listaNo.text == "1") {
+                                    validacionSaltar.show();
+                                } else {
+	                                var listacompras 		= listacompras_page.createObject();
+	                                listacompras.vuser 		= validaruser;
+	                                listacompras.hashkey 	= hashkeyN;
+	                                listacompras.nextParameter();
+	                                nPMenuDC.push(listacompras);
+	                            }
+                            }
+                            
                         }
                     
                     }
@@ -102,7 +118,6 @@ Page {
                             disabledImageSource: "asset:///images/menu/btnTemporada.png"
                             
                             onClicked: {
-                                //_timeline.requestTempCatProducto();
                                 var observatoriotemporada = observatoriotemporada_page.createObject();
                                 nPMenuDC.push(observatoriotemporada);
                             }
@@ -112,18 +127,26 @@ Page {
                     Container {
                         bottomPadding: 10
                         horizontalAlignment: HorizontalAlignment.Center
-                        
+                        Label {
+                            id: favoritoNo
+                            text: ""
+                            visible: false
+                        }
                         ImageButton {
                             id: btnFavoritos
                             defaultImageSource: "asset:///images/menu/btnFavoritos.png"
                             pressedImageSource: "asset:///images/menu/btnFavoritos1.png"
                             disabledImageSource: "asset:///images/menu/btnFavoritos.png"
                             onClicked: {
-                                var favoritos = favoritos_page.createObject();
-                                favoritos.vuser 	= validaruser;
-                                favoritos.hashkey 	= hashkeyN;
-                                favoritos.nextParameter();
-                                nPMenuDC.push(favoritos);
+                                if (favoritoNo.text == "1") {
+                                    validacionSaltar.show();
+                                } else {
+	                                var favoritos = favoritos_page.createObject();
+	                                favoritos.vuser 	= validaruser;
+	                                favoritos.hashkey 	= hashkeyN;
+	                                favoritos.nextParameter();
+	                                nPMenuDC.push(favoritos);
+                                }
                             }
                         }
                     
@@ -131,7 +154,11 @@ Page {
                     Container {
                         bottomPadding: 10
                         horizontalAlignment: HorizontalAlignment.Center
-                        
+                        Label {
+                            id: ajustesNo
+                            text: ""
+                            visible: false
+                        }
                         ImageButton {
                             id: btnAjustes
                             defaultImageSource: "asset:///images/menu/btnAjustes.png"
@@ -139,9 +166,15 @@ Page {
                             disabledImageSource: "asset:///images/menu/btnAjustes.png"
                             
                             onClicked: {
-                                var ajustes = ajustes_page.createObject();
-                                ajustes.hashkey = hashkeyN;
-                                nPMenuDC.push(ajustes);
+                                if (ajustesNo.text == "1") {
+                                    validacionSaltar.show();
+                                } else {
+                                    var ajustes = ajustes_page.createObject();
+                                    ajustes.hashkey 	= hashkeyN;
+                                    ajustes.nombre 		= nombreN;
+                                    ajustes.apellido 	= apellidoN;
+                                    nPMenuDC.push(ajustes);
+                                }
                             }
                         
                         }
@@ -169,8 +202,17 @@ Page {
             source: "Favoritos/Favoritos.qml"
         },
         ComponentDefinition {
+            id: listacompras_page
+            source: "ListaCompras/ListaCompras.qml"
+        },
+        ComponentDefinition {
             id: ajustes_page
             source: "Ajustes/AjustesMain.qml"
+        },
+        SystemToast {
+            id: validacionSaltar
+            body: "Necesitas iniciar sesión o registrarte en la aplicación."
+        
         }
     ]
     
@@ -179,11 +221,14 @@ Page {
     function validarUserPage(validaruser){
         if (validaruser == "1"){
             menuprincipal.actionBarVisibility = ChromeVisibility.Visible
-            btnObservatorio.enabled = true;
+            listaNo.text 	= "1";
+            favoritoNo.text = "1";
+            ajustesNo.text 	= "1";
+            /*btnObservatorio.enabled = true;
             btnLista.enabled 		= false;
             btnTemporada.enabled	= true;
             btnFavoritos.enabled 	= false;
-            btnAjustes.enabled 		= false;
+            btnAjustes.enabled 		= false;*/
         } else if (validaruser == "0"){
             menuprincipal.actionBarVisibility = ChromeVisibility.Hidden
         }

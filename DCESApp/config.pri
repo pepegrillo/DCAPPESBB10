@@ -89,6 +89,15 @@ lupdate_inclusion {
              $$quote($$BASEDIR/../assets/Favoritos/*.qml) \
              $$quote($$BASEDIR/../assets/Favoritos/*.js) \
              $$quote($$BASEDIR/../assets/Favoritos/*.qs) \
+             $$quote($$BASEDIR/../assets/ListaCompras/*.qml) \
+             $$quote($$BASEDIR/../assets/ListaCompras/*.js) \
+             $$quote($$BASEDIR/../assets/ListaCompras/*.qs) \
+             $$quote($$BASEDIR/../assets/ListaCompras/Alertas/*.qml) \
+             $$quote($$BASEDIR/../assets/ListaCompras/Alertas/*.js) \
+             $$quote($$BASEDIR/../assets/ListaCompras/Alertas/*.qs) \
+             $$quote($$BASEDIR/../assets/ListaCompras/Cotizar/*.qml) \
+             $$quote($$BASEDIR/../assets/ListaCompras/Cotizar/*.js) \
+             $$quote($$BASEDIR/../assets/ListaCompras/Cotizar/*.qs) \
              $$quote($$BASEDIR/../assets/Observatorio/*.qml) \
              $$quote($$BASEDIR/../assets/Observatorio/*.js) \
              $$quote($$BASEDIR/../assets/Observatorio/*.qs) \
@@ -98,12 +107,6 @@ lupdate_inclusion {
              $$quote($$BASEDIR/../assets/ObservatorioTemporada/*.qml) \
              $$quote($$BASEDIR/../assets/ObservatorioTemporada/*.js) \
              $$quote($$BASEDIR/../assets/ObservatorioTemporada/*.qs) \
-             $$quote($$BASEDIR/../assets/ObservatorioTemporada/error/*.qml) \
-             $$quote($$BASEDIR/../assets/ObservatorioTemporada/error/*.js) \
-             $$quote($$BASEDIR/../assets/ObservatorioTemporada/error/*.qs) \
-             $$quote($$BASEDIR/../assets/ObservatorioTemporada/error/SearchProducto/*.qml) \
-             $$quote($$BASEDIR/../assets/ObservatorioTemporada/error/SearchProducto/*.js) \
-             $$quote($$BASEDIR/../assets/ObservatorioTemporada/error/SearchProducto/*.qs) \
              $$quote($$BASEDIR/../assets/Registro/*.qml) \
              $$quote($$BASEDIR/../assets/Registro/*.js) \
              $$quote($$BASEDIR/../assets/Registro/*.qs) \

@@ -1,8 +1,33 @@
-<root>
-	<item text="Huevos y Carnes" image="imgRed.png"/>
-	<item text="Frutas"         image="imgBlue.png"/>
-	<item text="Pastas"         image="imgYellow.png"/>
-	<item text="Verduras" 		image="imgGreen.png"/>
-	<item text="Atún" 			image="imgOrange.png"/>
-	<item text="Pan" 			image="imgBrown.png"/>
-</root>
+<model>
+  <column loop="true">
+    <itemmonth filename="asset:///images/aries.jpg" displayname="Aries" />
+    <itemmonth filename="asset:///images/taurus.jpg" displayname="Taurus" />
+    <itemmonth filename="asset:///images/gemini.jpg" displayname="Gemini" />
+    <itemmonth filename="asset:///images/cancer.jpg" displayname="Cancer" />
+    <itemmonth filename="asset:///images/leo.jpg" displayname="Leo" />
+    <itemmonth filename="asset:///images/virgo.jpg" displayname="Virgo" />
+    <itemmonth filename="asset:///images/libra.jpg" displayname="Libra" />
+    <itemmonth filename="asset:///images/scorpio.jpg" displayname="Scorpio" />
+    <itemmonth filename="asset:///images/sagittarius.jpg"
+        displayname="Sagittarius" />
+    <itemmonth filename="asset:///images/capricorn.jpg"
+        displayname="Capricorn" />
+    <itemmonth filename="asset:///images/aquarius.jpg"
+        displayname="Aquarius" />
+    <itemmonth filename="asset:///images/pisces.jpg" displayname="Pisces" />
+  </column>
+  <column loop="true">
+    <itemyear filename="asset:///images/rat.jpg" displayname="Rat" />
+    <itemyear filename="asset:///images/ox.jpg" displayname="Ox" />
+    <itemyear filename="asset:///images/tiger.jpg" displayname="Tiger" />
+    <itemyear filename="asset:///images/rabbit.jpg" displayname="Rabbit" />
+    <itemyear filename="asset:///images/dragon.jpg" displayname="Dragon" />
+    <itemyear filename="asset:///images/snake.jpg" displayname="Snake" />
+    <itemyear filename="asset:///images/horse.jpg" displayname="Horse" />
+    <itemyear filename="asset:///images/goat.jpg" displayname="Goat" />
+    <itemyear filename="asset:///images/monkey.jpg" displayname="Monkey" />
+    <itemyear filename="asset:///images/rooster.jpg" displayname="Rooster" />
+    <itemyear filename="asset:///images/dog.jpg" displayname="Dog" />
+    <itemyear filename="asset:///images/pig.jpg" displayname="Pig" />
+  </column>
+</model>
